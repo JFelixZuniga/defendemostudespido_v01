@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Source Sans 3', system-ui, sans-serif; color: #17272f; background: #f6f3ec; }
+  a { color: #b98b3e; text-decoration: none; }
+  a:hover { color: #9c7331; }
+  input::placeholder, textarea::placeholder { color: #9aa7ac; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: #c6a15b !important; box-shadow: 0 0 0 3px rgba(198,161,91,0.15); }
+  @keyframes floatpulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+</style>
+</helmet>
+<div style="min-height:100vh;background:#f6f3ec;overflow-x:hidden;">
+
+  <!-- HEADER -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(9,26,38,0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(198,161,91,0.18);">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a href="Inicio.dc.html" style="display:flex;align-items:center;gap:14px;">
+        <div style="width:38px;height:44px;display:flex;align-items:center;justify-content:center;color:#c6a15b;">
+          <svg viewBox="0 0 24 28" width="34" height="40" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v22"/><path d="M4 24h16"/><path d="M4 6h16"/><path d="M6 8l-3 7h6l-3-7z"/><path d="M18 8l-3 7h6l-3-7z"/></svg>
+        </div>
+        <div style="line-height:1;font-family:'Playfair Display',serif;color:#f4efe3;letter-spacing:2px;">
+          <div style="font-weight:700;font-size:16px;">ABOGADOS</div>
+          <div style="font-weight:700;font-size:16px;color:#c6a15b;">LABORALES</div>
+        </div>
+      </a>
+      <nav style="display:flex;align-items:center;gap:30px;">
+        <a href="Inicio.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Inicio</a>
+        <a href="Nosotros.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Nosotros</a>
+        <div style="position:relative;" onMouseEnter="{{ openMenu }}" onMouseLeave="{{ closeMenu }}">
+          <a href="Inicio.dc.html#servicios" style="display:inline-flex;align-items:center;gap:6px;color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Servicios <span style="font-size:10px;color:#c6a15b;">▼</span></a>
+          <div style="position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:14px;width:340px;opacity:{{ menuOpacity }};visibility:{{ menuVis }};transition:opacity .18s;">
+           <div style="background:#0c2231;border:1px solid rgba(198,161,91,0.25);border-radius:12px;padding:10px;box-shadow:0 24px 50px rgba(8,23,34,0.5);">
+            <sc-for list="{{ allServices }}" as="m" hint-placeholder-count="6">
+              <a href="Servicio.dc.html?s={{ m.slug }}" style="display:block;padding:11px 14px;border-radius:8px;color:#d7ddda;font-size:14px;line-height:1.3;font-weight:500;" style-hover="background:rgba(198,161,91,0.12);color:#f4efe3;">{{ m.navLabel }}</a>
+            </sc-for>
+           </div>
+          </div>
+        </div>
+        <a href="Inicio.dc.html#faq" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Preguntas Frecuentes</a>
+        <a href="Contacto.dc.html" style="color:#c6a15b;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Contacto</a>
+      </nav>
+      <a href="{{ waLink }}" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25a35a;color:#fff;padding:11px 20px;border-radius:8px;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(37,163,90,0.35);" style-hover="background:#1f8c4c;color:#fff;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+        Evaluación Gratuita
+      </a>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section style="background:linear-gradient(120deg,#081722 0%,#0c2231 60%,#0d2e1e 130%);border-bottom:1px solid rgba(198,161,91,0.18);">
+    <div style="max-width:1120px;margin:0 auto;padding:56px 32px 62px;text-align:center;">
+      <div style="color:#dcbd7f;font-size:14px;letter-spacing:2px;font-weight:700;margin-bottom:16px;">CONTACTO</div>
+      <h1 style="font-family:'Playfair Display',serif;color:#f6f2e8;font-size:46px;line-height:1.1;margin:0 0 16px;font-weight:700;">Da el primer paso para defender tus derechos.</h1>
+      <p style="color:#c3d1c8;font-size:19px;line-height:1.5;margin:0 auto;max-width:680px;">No dejes pasar el tiempo legal para demandar — en muchos casos tienes solo <strong style="color:#f6f2e8;">60 días hábiles</strong>. Cuéntanos tu caso y te respondemos a la brevedad.</p>
+    </div>
+  </section>
+
+  <div style="max-width:1120px;margin:0 auto;padding:64px 32px 80px;display:grid;grid-template-columns:1fr 380px;gap:52px;align-items:start;">
+
+    <!-- FORM -->
+    <div style="background:#fff;border:1px solid #e8e2d5;border-radius:18px;padding:40px;box-shadow:0 18px 44px rgba(12,34,49,0.07);">
+      <h2 style="font-family:'Playfair Display',serif;font-size:28px;color:#0c2231;margin:0 0 8px;font-weight:700;">Cuéntanos tu caso</h2>
+      <p style="color:#5a6a70;font-size:16px;margin:0 0 30px;line-height:1.5;">Completa el formulario y un abogado se pondrá en contacto contigo. Confidencialidad garantizada.</p>
+
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#eef4ef;border:1px solid #cbe0d1;border-radius:14px;padding:34px;text-align:center;">
+          <div style="width:60px;height:60px;border-radius:50%;background:#3f8a58;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:#fff;">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>
+          </div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#0c2231;margin:0 0 10px;font-weight:700;">¡Mensaje enviado!</h3>
+          <p style="color:#41525a;font-size:16px;line-height:1.5;margin:0 0 22px;">Gracias por escribirnos. Un abogado revisará tu caso y te contactará dentro del horario de atención.</p>
+          <button onClick="{{ reset }}" style="background:none;border:1px solid #c6a15b;color:#b98b3e;padding:12px 24px;border-radius:9px;font-weight:600;font-size:15px;cursor:pointer;" style-hover="background:#c6a15b;color:#fff;">Enviar otra consulta</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submit }}">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:#0c2231;margin-bottom:7px;">Nombre completo *</label>
+              <input name="nombre" required value="{{ form.nombre }}" onChange="{{ onField }}" placeholder="Ej: María González" style="width:100%;padding:13px 15px;border:1px solid #d8d0bf;border-radius:9px;font-size:15px;font-family:inherit;background:#fbfaf6;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:#0c2231;margin-bottom:7px;">Teléfono *</label>
+              <input name="telefono" required value="{{ form.telefono }}" onChange="{{ onField }}" placeholder="+56 9 ..." style="width:100%;padding:13px 15px;border:1px solid #d8d0bf;border-radius:9px;font-size:15px;font-family:inherit;background:#fbfaf6;" />
+            </div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <label style="display:block;font-size:14px;font-weight:600;color:#0c2231;margin-bottom:7px;">Correo electrónico *</label>
+            <input name="email" type="email" required value="{{ form.email }}" onChange="{{ onField }}" placeholder="tucorreo@ejemplo.cl" style="width:100%;padding:13px 15px;border:1px solid #d8d0bf;border-radius:9px;font-size:15px;font-family:inherit;background:#fbfaf6;" />
+          </div>
+          <div style="margin-bottom:18px;">
+            <label style="display:block;font-size:14px;font-weight:600;color:#0c2231;margin-bottom:7px;">Tipo de caso</label>
+            <select name="tipo" value="{{ form.tipo }}" onChange="{{ onField }}" style="width:100%;padding:13px 15px;border:1px solid #d8d0bf;border-radius:9px;font-size:15px;font-family:inherit;background:#fbfaf6;color:#17272f;">
+              <option value="">Selecciona una opción</option>
+              <sc-for list="{{ allServices }}" as="m" hint-placeholder-count="6">
+                <option value="{{ m.navLabel }}">{{ m.navLabel }}</option>
+              </sc-for>
+              <option value="Otro / No estoy seguro">Otro / No estoy seguro</option>
+            </select>
+          </div>
+          <div style="margin-bottom:24px;">
+            <label style="display:block;font-size:14px;font-weight:600;color:#0c2231;margin-bottom:7px;">Cuéntanos qué pasó *</label>
+            <textarea name="mensaje" required rows="5" value="{{ form.mensaje }}" onChange="{{ onField }}" placeholder="Describe brevemente tu situación (fechas, empresa, motivo del despido, etc.)" style="width:100%;padding:13px 15px;border:1px solid #d8d0bf;border-radius:9px;font-size:15px;font-family:inherit;background:#fbfaf6;resize:vertical;line-height:1.5;"></textarea>
+          </div>
+          <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fbeaea;border:1px solid #e6c3c3;color:#a93b3b;padding:12px 16px;border-radius:9px;font-size:14px;margin-bottom:18px;">{{ error }}</div>
+          </sc-if>
+          <button type="submit" disabled="{{ sending }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#25a35a;color:#fff;padding:17px;border:none;border-radius:11px;font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 12px 28px rgba(37,163,90,0.35);opacity:{{ btnOpacity }};" style-hover="background:#1f8c4c;">
+            <span>{{ btnLabel }}</span>
+          </button>
+          <p style="text-align:center;color:#8593a0;font-size:13px;margin:16px 0 0;">Al enviar aceptas ser contactado. Tus datos son 100% confidenciales.</p>
+        </form>
+      </sc-if>
+    </div>
+
+    <!-- INFO SIDEBAR -->
+    <aside style="display:flex;flex-direction:column;gap:20px;">
+      <a href="{{ waLink }}" target="_blank" style="display:block;background:linear-gradient(135deg,#0d2e1e,#124026);border-radius:16px;padding:28px;color:inherit;" style-hover="opacity:0.95;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#25a35a;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+          </div>
+          <div style="font-family:'Playfair Display',serif;color:#f6f2e8;font-size:19px;font-weight:700;">WhatsApp directo</div>
+        </div>
+        <div style="color:#dcbd7f;font-size:22px;font-weight:700;font-family:'Playfair Display',serif;">+56 9 1234 5678</div>
+        <div style="color:#c3d1c8;font-size:14px;margin-top:6px;">La vía más rápida — respuesta inmediata.</div>
+      </a>
+
+      <div style="background:#fff;border:1px solid #e8e2d5;border-radius:16px;padding:28px;">
+        <sc-for list="{{ contactInfo }}" as="c" hint-placeholder-count="3">
+          <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #efe9dc;">
+            <div style="flex-shrink:0;width:40px;height:40px;border-radius:10px;background:#f2ede1;display:flex;align-items:center;justify-content:center;color:#b98b3e;">
+              <span style="font-size:20px;line-height:1;" dangerouslySetInnerHTML="{{ c.iconHtml }}"></span>
+            </div>
+            <div>
+              <div style="font-size:13px;color:#8593a0;font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">{{ c.label }}</div>
+              <div style="font-size:16px;color:#0c2231;font-weight:600;line-height:1.35;">{{ c.value }}</div>
+            </div>
+          </div>
+        </sc-for>
+        <div style="padding-top:16px;display:flex;gap:10px;align-items:center;color:#3f8a58;font-size:14px;font-weight:600;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          Confidencialidad absoluta garantizada
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:#081722;border-top:1px solid rgba(198,161,91,0.16);">
+    <div style="max-width:1200px;margin:0 auto;padding:60px 32px 30px;">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+            <div style="color:#c6a15b;"><svg viewBox="0 0 24 28" width="28" height="34" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v22"/><path d="M4 24h16"/><path d="M4 6h16"/><path d="M6 8l-3 7h6l-3-7z"/><path d="M18 8l-3 7h6l-3-7z"/></svg></div>
+            <div style="font-family:'Playfair Display',serif;color:#f4efe3;letter-spacing:2px;line-height:1.1;"><div style="font-weight:700;font-size:15px;">ABOGADOS</div><div style="font-weight:700;font-size:15px;color:#c6a15b;">LABORALES</div></div>
+          </div>
+          <p style="color:#8fa0a7;font-size:15px;line-height:1.6;margin:0;max-width:320px;">Defendemos a trabajadores en todo Chile. Tu tranquilidad y cada peso que la ley te otorga, es nuestra misión.</p>
+        </div>
+        <div>
+          <div style="color:#dcbd7f;font-size:13px;letter-spacing:1.5px;font-weight:700;margin-bottom:16px;">SERVICIOS</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ allServices }}" as="m" hint-placeholder-count="6">
+              <a href="Servicio.dc.html?s={{ m.slug }}" style="color:#a9b6b8;font-size:14.5px;line-height:1.3;" style-hover="color:#f4efe3;">{{ m.navLabel }}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="color:#dcbd7f;font-size:13px;letter-spacing:1.5px;font-weight:700;margin-bottom:16px;">CONTACTO</div>
+          <div style="display:flex;flex-direction:column;gap:11px;color:#a9b6b8;font-size:15px;line-height:1.4;">
+            <div>WhatsApp: <a href="{{ waLink }}" target="_blank">+56 9 1234 5678</a></div>
+            <div>Lun – Vie, 07:00 a 19:00 hrs</div>
+            <div>Instagram: <a href="https://instagram.com/defendemostudespido" target="_blank">@defendemostudespido</a></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:#6f8188;font-size:13px;">
+        <div>© 2026 Abogados Laborales. Todos los derechos reservados.</div>
+        <div>Confidencialidad absoluta garantizada en cada consulta.</div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="{{ waLink }}" target="_blank" style="position:fixed;right:26px;bottom:26px;z-index:60;width:64px;height:64px;border-radius:50%;background:#25a35a;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(37,163,90,0.5);animation:floatpulse 2.6s ease-in-out infinite;" style-hover="background:#1f8c4c;">
+    <svg viewBox="0 0 24 24" width="34" height="34" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    menuOpen: false,
+    sending: false,
+    sent: false,
+    error: "",
+    form: { nombre: "", telefono: "", email: "", tipo: "", mensaje: "" },
+  };
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    if (this.state.sending) return;
+    this.setState({ sending: true, error: "" });
+    const payload = { ...this.state.form };
+    try {
+      // Integración con Resend: reemplazar por el endpoint real del backend.
+      // Este endpoint debe usar la API de Resend en el servidor para enviar el correo.
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("bad status");
+      this.setState({ sending: false, sent: true });
+    } catch (err) {
+      // Aún sin backend conectado: mostramos confirmación optimista para la demo.
+      // Cuando Resend esté configurado, elimina este fallback y muestra el error real.
+      console.warn("Formulario de contacto: backend/Resend no conectado todavía.", err);
+      this.setState({ sending: false, sent: true });
+    }
+  }
+
+  renderVals() {
+    const waLink = "https://wa.me/56912345678?text=Hola,%20quisiera%20una%20evaluaci%C3%B3n%20gratuita%20de%20mi%20caso%20laboral.";
+    const icon = (p) => ({ __html: `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>` });
+
+    const allServices = [
+      { slug: "despido-injustificado", navLabel: "Despido injustificado, indebido o verbal" },
+      { slug: "tutela-laboral", navLabel: "Tutela laboral por vulneración de derechos" },
+      { slug: "autodespido", navLabel: "Autodespido (despido indirecto)" },
+      { slug: "nulidad-despido", navLabel: "Nulidad del despido (Ley Bustos)" },
+      { slug: "accidentes-trabajo", navLabel: "Accidentes del trabajo y enfermedades" },
+      { slug: "finiquito", navLabel: "Finiquito mal calculado o no pagado" },
+    ];
+
+    const contactInfo = [
+      { label: "HORARIO DE ATENCIÓN", value: "Lunes a viernes, 07:00 a 19:00 hrs", iconHtml: icon('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>') },
+      { label: "CORREO", value: "contacto@abogadoslaborales.cl", iconHtml: icon('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>') },
+      { label: "INSTAGRAM", value: "@defendemostudespido", iconHtml: icon('<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>') },
+    ];
+
+    return {
+      waLink, allServices, contactInfo,
+      form: this.state.form,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      sending: this.state.sending,
+      error: this.state.error,
+      btnLabel: this.state.sending ? "Enviando…" : "Enviar consulta",
+      btnOpacity: this.state.sending ? "0.7" : "1",
+      submit: (e) => this.handleSubmit(e),
+      onField: (e) => {
+        const { name, value } = e.target;
+        this.setState(s => ({ form: { ...s.form, [name]: value } }));
+      },
+      reset: () => this.setState({ sent: false, form: { nombre: "", telefono: "", email: "", tipo: "", mensaje: "" } }),
+      menuOpacity: this.state.menuOpen ? "1" : "0",
+      menuVis: this.state.menuOpen ? "visible" : "hidden",
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

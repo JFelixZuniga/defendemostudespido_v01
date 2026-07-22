@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Source Sans 3', system-ui, sans-serif; color: #17272f; background: #f6f3ec; }
+  a { color: #b98b3e; text-decoration: none; }
+  a:hover { color: #9c7331; }
+  @keyframes floatpulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+</style>
+</helmet>
+<div style="min-height:100vh;background:#f6f3ec;overflow-x:hidden;">
+
+  <!-- HEADER -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(9,26,38,0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(198,161,91,0.18);">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a href="Inicio.dc.html" style="display:flex;align-items:center;gap:14px;">
+        <div style="width:38px;height:44px;display:flex;align-items:center;justify-content:center;color:#c6a15b;">
+          <svg viewBox="0 0 24 28" width="34" height="40" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v22"/><path d="M4 24h16"/><path d="M4 6h16"/><path d="M6 8l-3 7h6l-3-7z"/><path d="M18 8l-3 7h6l-3-7z"/></svg>
+        </div>
+        <div style="line-height:1;font-family:'Playfair Display',serif;color:#f4efe3;letter-spacing:2px;">
+          <div style="font-weight:700;font-size:16px;">ABOGADOS</div>
+          <div style="font-weight:700;font-size:16px;color:#c6a15b;">LABORALES</div>
+        </div>
+      </a>
+      <nav style="display:flex;align-items:center;gap:30px;">
+        <a href="Inicio.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Inicio</a>
+        <a href="Nosotros.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Nosotros</a>
+        <div style="position:relative;" onMouseEnter="{{ openMenu }}" onMouseLeave="{{ closeMenu }}">
+          <a href="Inicio.dc.html#servicios" style="display:inline-flex;align-items:center;gap:6px;color:#c6a15b;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Servicios <span style="font-size:10px;">▼</span></a>
+          <div style="position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:14px;width:340px;opacity:{{ menuOpacity }};visibility:{{ menuVis }};transition:opacity .18s;">
+           <div style="background:#0c2231;border:1px solid rgba(198,161,91,0.25);border-radius:12px;padding:10px;box-shadow:0 24px 50px rgba(8,23,34,0.5);">
+            <sc-for list="{{ allServices }}" as="m" hint-placeholder-count="6">
+              <a href="Servicio.dc.html?s={{ m.slug }}" style="display:block;padding:11px 14px;border-radius:8px;color:#d7ddda;font-size:14px;line-height:1.3;font-weight:500;" style-hover="background:rgba(198,161,91,0.12);color:#f4efe3;">{{ m.navLabel }}</a>
+            </sc-for>
+           </div>
+          </div>
+        </div>
+        <a href="Inicio.dc.html#faq" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Preguntas Frecuentes</a>
+        <a href="Contacto.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Contacto</a>
+      </nav>
+      <a href="{{ waLink }}" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25a35a;color:#fff;padding:11px 20px;border-radius:8px;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(37,163,90,0.35);" style-hover="background:#1f8c4c;color:#fff;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+        Evaluación Gratuita
+      </a>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section style="background:linear-gradient(120deg,#081722 0%,#0c2231 60%,#0d2e1e 130%);border-bottom:1px solid rgba(198,161,91,0.18);">
+    <div style="max-width:1120px;margin:0 auto;padding:52px 32px 64px;">
+      <div style="display:flex;gap:10px;align-items:center;color:#8fa0a7;font-size:14px;margin-bottom:26px;">
+        <a href="Inicio.dc.html" style="color:#8fa0a7;" style-hover="color:#dcbd7f;">Inicio</a>
+        <span>›</span>
+        <a href="Inicio.dc.html#servicios" style="color:#8fa0a7;" style-hover="color:#dcbd7f;">Servicios</a>
+        <span>›</span>
+        <span style="color:#dcbd7f;">{{ svc.navLabel }}</span>
+      </div>
+      <div style="display:flex;gap:22px;align-items:flex-start;">
+        <div style="flex-shrink:0;width:66px;height:66px;border-radius:14px;background:rgba(198,161,91,0.14);border:1px solid rgba(198,161,91,0.3);display:flex;align-items:center;justify-content:center;color:#dcbd7f;">
+          <span style="font-size:30px;line-height:1;" dangerouslySetInnerHTML="{{ svc.iconHtml }}"></span>
+        </div>
+        <div style="max-width:820px;">
+          <h1 style="font-family:'Playfair Display',serif;color:#f6f2e8;font-size:44px;line-height:1.1;margin:0 0 14px;font-weight:700;">{{ svc.title }}</h1>
+          <p style="color:#c3d1c8;font-size:19px;line-height:1.5;margin:0;">{{ svc.subtitle }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="max-width:1120px;margin:0 auto;padding:72px 32px;display:grid;grid-template-columns:1fr 320px;gap:56px;align-items:start;">
+
+    <!-- MAIN COLUMN -->
+    <main>
+      <!-- QUÉ SE TRATA -->
+      <div style="margin-bottom:56px;">
+        <div style="color:#b98b3e;font-size:13px;letter-spacing:2px;font-weight:700;margin-bottom:12px;">DE QUÉ SE TRATA</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:30px;color:#0c2231;margin:0 0 20px;font-weight:700;">{{ svc.aboutHeading }}</h2>
+        <sc-for list="{{ svc.about }}" as="p" hint-placeholder-count="3">
+          <p style="color:#41525a;font-size:17px;line-height:1.7;margin:0 0 16px;">{{ p }}</p>
+        </sc-for>
+      </div>
+
+      <!-- LEY APLICABLE -->
+      <div style="margin-bottom:56px;">
+        <div style="color:#b98b3e;font-size:13px;letter-spacing:2px;font-weight:700;margin-bottom:12px;">MARCO LEGAL</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:30px;color:#0c2231;margin:0 0 22px;font-weight:700;">Ley aplicable</h2>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <sc-for list="{{ svc.laws }}" as="l" hint-placeholder-count="3">
+            <div style="display:flex;gap:18px;background:#fff;border:1px solid #e8e2d5;border-left:4px solid #c6a15b;border-radius:10px;padding:20px 24px;">
+              <div style="flex-shrink:0;font-family:'Playfair Display',serif;font-weight:700;color:#c6a15b;font-size:16px;min-width:130px;">{{ l.ref }}</div>
+              <div style="color:#41525a;font-size:16px;line-height:1.55;">{{ l.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- QUÉ PUEDES RECUPERAR -->
+      <div style="margin-bottom:56px;">
+        <div style="color:#b98b3e;font-size:13px;letter-spacing:2px;font-weight:700;margin-bottom:12px;">TUS DERECHOS</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:30px;color:#0c2231;margin:0 0 22px;font-weight:700;">{{ svc.recoverHeading }}</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <sc-for list="{{ svc.recover }}" as="r" hint-placeholder-count="4">
+            <div style="display:flex;gap:12px;align-items:flex-start;background:#eef4ef;border:1px solid #d8e6db;border-radius:10px;padding:16px 18px;">
+              <span style="flex-shrink:0;color:#3f8a58;margin-top:2px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg></span>
+              <span style="color:#2c4a37;font-size:15.5px;line-height:1.45;font-weight:500;">{{ r }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div>
+        <div style="color:#b98b3e;font-size:13px;letter-spacing:2px;font-weight:700;margin-bottom:12px;">DUDAS FRECUENTES</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:30px;color:#0c2231;margin:0 0 22px;font-weight:700;">Preguntas y respuestas</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="3">
+            <div style="background:#fff;border:1px solid #e8e2d5;border-radius:12px;overflow:hidden;">
+              <button onClick="{{ f.toggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;background:none;border:none;padding:20px 24px;cursor:pointer;text-align:left;font-family:'Playfair Display',serif;font-size:18px;color:#0c2231;font-weight:600;">
+                <span>{{ f.q }}</span>
+                <span style="color:#c6a15b;font-size:24px;flex-shrink:0;transition:transform .2s;transform:{{ f.rotate }};">+</span>
+              </button>
+              <div style="max-height:{{ f.maxH }};overflow:hidden;transition:max-height .28s ease;">
+                <p style="padding:0 24px 22px;margin:0;color:#41525a;font-size:16px;line-height:1.6;">{{ f.a }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+
+    <!-- SIDEBAR: PLAZOS + CTA -->
+    <aside style="position:sticky;top:96px;display:flex;flex-direction:column;gap:22px;">
+      <div style="background:#0c2231;border:1px solid rgba(198,161,91,0.25);border-radius:16px;padding:28px;">
+        <div style="display:flex;align-items:center;gap:10px;color:#dcbd7f;margin-bottom:14px;">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span style="font-size:13px;letter-spacing:1.5px;font-weight:700;">PLAZO PARA ACTUAR</span>
+        </div>
+        <div style="font-family:'Playfair Display',serif;color:#f6f2e8;font-size:32px;font-weight:700;line-height:1.1;margin-bottom:10px;">{{ svc.deadline }}</div>
+        <p style="color:#adbbc0;font-size:14.5px;line-height:1.55;margin:0;">{{ svc.deadlineNote }}</p>
+      </div>
+      <div style="background:linear-gradient(135deg,#0d2e1e,#124026);border-radius:16px;padding:28px;">
+        <h3 style="font-family:'Playfair Display',serif;color:#f6f2e8;font-size:22px;margin:0 0 10px;font-weight:700;line-height:1.2;">¿Tu caso encaja aquí?</h3>
+        <p style="color:#c3d1c8;font-size:15px;line-height:1.5;margin:0 0 20px;">Evaluamos la viabilidad sin costo inicial. Solo cobramos si ganamos.</p>
+        <a href="{{ waLink }}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#25a35a;color:#fff;padding:15px;border-radius:10px;font-weight:700;font-size:16px;box-shadow:0 10px 26px rgba(37,163,90,0.4);" style-hover="background:#1f8c4c;color:#fff;">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+          Consultar por WhatsApp
+        </a>
+      </div>
+      <div style="border:1px dashed #cdbf9f;border-radius:14px;padding:22px 24px;background:#fbf8f0;">
+        <div style="font-family:'Playfair Display',serif;font-size:15px;color:#0c2231;font-weight:700;margin-bottom:14px;">Otros servicios</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ otherServices }}" as="o" hint-placeholder-count="5">
+            <a href="Servicio.dc.html?s={{ o.slug }}" style="color:#41525a;font-size:14.5px;line-height:1.35;" style-hover="color:#b98b3e;">{{ o.navLabel }}</a>
+          </sc-for>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CTA FINAL -->
+  <section style="max-width:1120px;margin:0 auto 90px;padding:0 32px;">
+    <div style="position:relative;overflow:hidden;background:linear-gradient(120deg,#0d2e1e 0%,#124026 55%,#0c2231 100%);border-radius:20px;padding:56px;display:flex;align-items:center;gap:40px;justify-content:space-between;flex-wrap:wrap;">
+      <div style="position:relative;max-width:620px;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:34px;color:#f6f2e8;margin:0 0 12px;font-weight:700;line-height:1.15;">No dejes pasar el plazo legal. <span style="color:#dcbd7f;">Actúa hoy.</span></h2>
+        <p style="color:#c3d1c8;font-size:17px;margin:0;line-height:1.5;">Escríbenos y analizamos tu caso sin costo inicial, estés donde estés en Chile.</p>
+      </div>
+      <a href="{{ waLink }}" target="_blank" style="position:relative;display:inline-flex;align-items:center;gap:13px;background:#25a35a;color:#fff;padding:20px 34px;border-radius:12px;font-weight:700;font-size:18px;box-shadow:0 14px 34px rgba(37,163,90,0.4);white-space:nowrap;" style-hover="background:#1f8c4c;color:#fff;transform:translateY(-2px);">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+        Consulta gratis
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#081722;border-top:1px solid rgba(198,161,91,0.16);">
+    <div style="max-width:1200px;margin:0 auto;padding:60px 32px 30px;">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+            <div style="color:#c6a15b;"><svg viewBox="0 0 24 28" width="28" height="34" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v22"/><path d="M4 24h16"/><path d="M4 6h16"/><path d="M6 8l-3 7h6l-3-7z"/><path d="M18 8l-3 7h6l-3-7z"/></svg></div>
+            <div style="font-family:'Playfair Display',serif;color:#f4efe3;letter-spacing:2px;line-height:1.1;"><div style="font-weight:700;font-size:15px;">ABOGADOS</div><div style="font-weight:700;font-size:15px;color:#c6a15b;">LABORALES</div></div>
+          </div>
+          <p style="color:#8fa0a7;font-size:15px;line-height:1.6;margin:0;max-width:320px;">Defendemos a trabajadores en todo Chile. Tu tranquilidad y cada peso que la ley te otorga, es nuestra misión.</p>
+        </div>
+        <div>
+          <div style="color:#dcbd7f;font-size:13px;letter-spacing:1.5px;font-weight:700;margin-bottom:16px;">SERVICIOS</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ allServices }}" as="m" hint-placeholder-count="6">
+              <a href="Servicio.dc.html?s={{ m.slug }}" style="color:#a9b6b8;font-size:14.5px;line-height:1.3;" style-hover="color:#f4efe3;">{{ m.navLabel }}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="color:#dcbd7f;font-size:13px;letter-spacing:1.5px;font-weight:700;margin-bottom:16px;">CONTACTO</div>
+          <div style="display:flex;flex-direction:column;gap:11px;color:#a9b6b8;font-size:15px;line-height:1.4;">
+            <div>WhatsApp: <a href="{{ waLink }}" target="_blank">+56 9 1234 5678</a></div>
+            <div>Lun – Vie, 07:00 a 19:00 hrs</div>
+            <div>Instagram: <a href="https://instagram.com/defendemostudespido" target="_blank">@defendemostudespido</a></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:#6f8188;font-size:13px;">
+        <div>© 2026 Abogados Laborales. Todos los derechos reservados.</div>
+        <div>Confidencialidad absoluta garantizada en cada consulta.</div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="{{ waLink }}" target="_blank" style="position:fixed;right:26px;bottom:26px;z-index:60;width:64px;height:64px;border-radius:50%;background:#25a35a;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(37,163,90,0.5);animation:floatpulse 2.6s ease-in-out infinite;" style-hover="background:#1f8c4c;">
+    <svg viewBox="0 0 24 24" width="34" height="34" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { openFaq: 0, menuOpen: false };
+
+  componentDidMount() {
+    window.addEventListener('popstate', () => this.forceUpdate());
+  }
+
+  renderVals() {
+    const waLink = "https://wa.me/56912345678?text=Hola,%20quisiera%20una%20evaluaci%C3%B3n%20gratuita%20de%20mi%20caso%20laboral.";
+    const icon = (p) => ({ __html: `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>` });
+
+    const DATA = {
+      "despido-injustificado": {
+        navLabel: "Despido injustificado, indebido o verbal",
+        title: "Despido injustificado, indebido o verbal",
+        subtitle: "Si te desvincularon sin una causa legal válida, con una causal mal invocada o simplemente de forma verbal, la ley te reconoce recargos e indemnizaciones que podemos exigir por ti.",
+        iconHtml: icon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9.5 13 3 3"/><path d="m12.5 13-3 3"/>'),
+        aboutHeading: "Cuando el despido no cumple la ley, tú tienes la razón",
+        about: [
+          "Un despido es injustificado cuando el empleador termina tu contrato sin una causal legal real, o invoca una causal (como \"necesidades de la empresa\") que no logra probar ante el tribunal. Es indebido cuando aplica una causal de caducidad —por ejemplo, supuesta falta grave— sin que los hechos existan o estén acreditados.",
+          "El despido verbal, muy común en la práctica, ocurre cuando simplemente te dicen \"no vengas más\" sin entregarte la carta de despido con las causales y los hechos que la fundan. La ley exige esa carta por escrito; su ausencia debilita gravemente la posición del empleador.",
+          "En cualquiera de estos casos puedes reclamar judicialmente. Si el tribunal declara que el despido fue injustificado, indebido o improcedente, tu indemnización por años de servicio se incrementa con un recargo legal que puede ir del 30% al 100%."
+        ],
+        laws: [
+          { ref: "Art. 159–161 C. del Trabajo", text: "Establecen las causales de término del contrato. Si ninguna concurre o no se prueba, el despido carece de justificación." },
+          { ref: "Art. 162 C. del Trabajo", text: "Obliga a comunicar el despido por escrito, señalando la causal y los hechos. El despido verbal incumple este deber." },
+          { ref: "Art. 168 C. del Trabajo", text: "Permite reclamar ante el Juzgado del Trabajo y fija los recargos: 30% (necesidades de la empresa), 50% (causal injustificada) y hasta 80%–100% en causales de caducidad mal aplicadas." }
+        ],
+        recoverHeading: "¿Qué puedes recuperar?",
+        recover: [
+          "Indemnización por años de servicio, con el recargo legal correspondiente",
+          "Indemnización sustitutiva del aviso previo (mes de desahucio)",
+          "Feriado legal y proporcional pendiente",
+          "Remuneraciones y cotizaciones adeudadas al término"
+        ],
+        deadline: "60 días hábiles",
+        deadlineNote: "Contados desde la separación para demandar. El plazo se suspende si reclamas ante la Inspección del Trabajo, con un tope máximo de 90 días hábiles.",
+        faqs: [
+          { q: "Me despidieron de forma verbal, ¿tengo cómo probarlo?", a: "Sí. La ausencia de carta de despido juega a tu favor, y podemos acreditar el término con testigos, mensajes, el cese de acceso a tu lugar de trabajo o el no pago de remuneraciones. Escríbenos y revisamos qué evidencia tienes." },
+          { q: "El finiquito decía \"necesidades de la empresa\", ¿es válido?", a: "Depende. El empleador debe probar la causal; si no puede, el despido es injustificado y procede un recargo del 30% sobre tu indemnización por años de servicio." },
+          { q: "¿Cuánto podría corresponderme?", a: "Varía según tu remuneración y antigüedad. En una primera evaluación gratuita estimamos un rango realista de lo que podrías recuperar." }
+        ]
+      },
+      "tutela-laboral": {
+        navLabel: "Tutela laboral por vulneración de derechos",
+        title: "Tutela laboral por vulneración de derechos fundamentales",
+        subtitle: "Cuando el trabajo afecta tu dignidad —acoso, discriminación, represalias o daño a tu integridad— la tutela laboral sanciona al empleador y suma indemnizaciones especiales. Tu dignidad es intocable.",
+        iconHtml: icon('<path d="M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5z"/><circle cx="12" cy="10" r="2.2"/><path d="M8.5 15.5a3.6 3.6 0 0 1 7 0"/>'),
+        aboutHeading: "Tus derechos fundamentales también rigen dentro del trabajo",
+        about: [
+          "El procedimiento de tutela laboral protege los derechos fundamentales del trabajador frente al empleador: la vida y la integridad física y psíquica, la honra, la libertad de expresión, la no discriminación y la garantía de indemnidad (no sufrir represalias por ejercer tus derechos o denunciar).",
+          "Aplica tanto durante la relación laboral —por acoso laboral, acoso sexual, discriminación o menoscabo— como con ocasión del despido, cuando la desvinculación se usa como represalia o vulnera una garantía fundamental.",
+          "Si el tribunal acoge la tutela, además de las indemnizaciones ordinarias por despido, ordena una indemnización adicional especial que la ley fija entre 6 y 11 remuneraciones mensuales."
+        ],
+        laws: [
+          { ref: "Art. 485–495 C. del Trabajo", text: "Regulan el procedimiento de tutela de derechos fundamentales y la indemnización especial de 6 a 11 remuneraciones." },
+          { ref: "Art. 2 C. del Trabajo", text: "Prohíbe los actos de discriminación y reconoce el respeto a la dignidad del trabajador como principio rector." },
+          { ref: "Art. 184 C. del Trabajo", text: "Impone al empleador el deber de proteger eficazmente la vida y salud de sus trabajadores." }
+        ],
+        recoverHeading: "¿Qué puedes obtener?",
+        recover: [
+          "Indemnización especial de 6 a 11 remuneraciones mensuales",
+          "Indemnización por años de servicio y recargo (si hubo despido)",
+          "Reparación por el daño a tus derechos fundamentales",
+          "Sanción y medidas correctivas contra el empleador"
+        ],
+        deadline: "60 días hábiles",
+        deadlineNote: "Desde la vulneración o el despido para interponer la denuncia de tutela. El plazo se suspende con el reclamo ante la Inspección del Trabajo.",
+        faqs: [
+          { q: "¿Qué se considera acoso laboral?", a: "Toda conducta de hostigamiento reiterado —del empleador o de compañeros— que humille, menoscabe o afecte tu situación laboral o tu integridad psíquica. No hace falta un único episodio grave: la reiteración cuenta." },
+          { q: "¿Puedo denunciar aunque siga trabajando?", a: "Sí. La tutela procede durante la relación laboral y la ley te protege especialmente contra represalias (garantía de indemnidad) por haber denunciado." },
+          { q: "¿Necesito pruebas contundentes?", a: "La tutela tiene un régimen de prueba favorable al trabajador: basta aportar indicios suficientes para que sea el empleador quien deba justificar su conducta. Revisamos contigo qué indicios reunir." }
+        ]
+      },
+      "autodespido": {
+        navLabel: "Autodespido (despido indirecto)",
+        title: "Autodespido (despido indirecto)",
+        subtitle: "Cuando es el empleador quien incumple gravemente el contrato, no tienes por qué renunciar y perder tus años de servicio. La ley te permite ponerle término tú mismo y cobrar todas las indemnizaciones.",
+        iconHtml: icon('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>'),
+        aboutHeading: "Renunciar te hace perder tus derechos; el autodespido los protege",
+        about: [
+          "El autodespido —o despido indirecto— es la herramienta que la ley entrega al trabajador cuando el empleador incurre en incumplimientos graves: no pagar remuneraciones o cotizaciones, acoso, maltrato, no otorgar el trabajo convenido u otras faltas del artículo 160.",
+          "En lugar de renunciar (lo que te haría perder toda indemnización), comunicas por escrito el término del contrato imputando la causal al empleador, y luego demandas ante el tribunal para que se declare procedente.",
+          "Si el tribunal acoge el autodespido, tienes derecho a las mismas indemnizaciones que un despido injustificado, incluyendo los recargos legales sobre los años de servicio."
+        ],
+        laws: [
+          { ref: "Art. 171 C. del Trabajo", text: "Autoriza al trabajador a poner término al contrato cuando el empleador incurre en las causales del art. 160, con derecho a indemnización y recargos." },
+          { ref: "Art. 160 C. del Trabajo", text: "Enumera los incumplimientos graves imputables al empleador que habilitan el autodespido." },
+          { ref: "Art. 162 C. del Trabajo", text: "Exige comunicar el término por escrito, indicando la causal y los hechos, dentro de los plazos legales." }
+        ],
+        recoverHeading: "¿Qué puedes cobrar?",
+        recover: [
+          "Indemnización por años de servicio, con recargo del 50% u 80%",
+          "Indemnización sustitutiva del aviso previo",
+          "Remuneraciones y cotizaciones adeudadas",
+          "Feriado legal y proporcional pendiente"
+        ],
+        deadline: "60 días hábiles",
+        deadlineNote: "Desde la fecha en que comunicas el autodespido para demandar. Es clave documentar los incumplimientos antes de dar el paso: podemos asesorarte previamente.",
+        faqs: [
+          { q: "¿Es lo mismo que renunciar?", a: "No, es lo contrario. Al renunciar pierdes tus indemnizaciones; con el autodespido responsabilizas al empleador por su incumplimiento y conservas el derecho a cobrarlas." },
+          { q: "No me pagan las cotizaciones, ¿puedo autodespedirme?", a: "El no pago de cotizaciones puede constituir un incumplimiento grave. Conviene evaluar la gravedad y reunir respaldo antes de comunicar el término; te guiamos en ese proceso." },
+          { q: "¿Y si el tribunal no acoge la causal?", a: "Por eso es importante una evaluación previa seria. Analizamos la solidez de tu caso antes de recomendar el autodespido, para no exponerte a un mal resultado." }
+        ]
+      },
+      "nulidad-despido": {
+        navLabel: "Nulidad del despido (Ley Bustos)",
+        title: "Nulidad del despido (Ley Bustos)",
+        subtitle: "Si al momento de despedirte el empleador no tenía tus cotizaciones previsionales al día, el despido es nulo: debe seguir pagando tu remuneración hasta que regularice tu situación previsional.",
+        iconHtml: icon('<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 3h6v3H9z"/><path d="m9 13 2 2 4-4"/>'),
+        aboutHeading: "Sin cotizaciones al día, el despido no produce efecto",
+        about: [
+          "La llamada \"Ley Bustos\" sanciona al empleador que despide teniendo cotizaciones previsionales impagas. Para que el despido produzca el efecto de terminar el contrato, el empleador debe haber pagado íntegramente las cotizaciones de salud, AFP y seguro de cesantía.",
+          "Si no lo hizo, el despido es nulo (sanción de nulidad): aunque en los hechos dejaste de trabajar, el empleador queda obligado a seguir pagándote las remuneraciones y demás prestaciones desde el despido hasta que convalide el despido, es decir, hasta que pague y acredite el total de lo adeudado.",
+          "Esta obligación se acumula a las indemnizaciones que corresponderían por un despido injustificado, por lo que puede representar una suma muy relevante."
+        ],
+        laws: [
+          { ref: "Art. 162 inc. 5–7 C. del Trabajo", text: "Establece que el despido no produce efecto si no están pagadas las cotizaciones, obligando a pagar remuneraciones hasta la convalidación." },
+          { ref: "Ley N° 19.631 (Ley Bustos)", text: "Introdujo la sanción de nulidad del despido por cotizaciones previsionales impagas." },
+          { ref: "Art. 480 C. del Trabajo", text: "Regula los plazos de prescripción de las acciones laborales aplicables al cobro." }
+        ],
+        recoverHeading: "¿Qué puedes reclamar?",
+        recover: [
+          "Remuneraciones desde el despido hasta la convalidación",
+          "Pago íntegro de las cotizaciones previsionales adeudadas",
+          "Indemnizaciones propias del despido injustificado",
+          "Cotizaciones de salud y seguro de cesantía pendientes"
+        ],
+        deadline: "6 meses",
+        deadlineNote: "Plazo referencial para las acciones asociadas a la nulidad del despido desde la suspensión de la relación laboral. Cada caso tiene matices; conviene revisarlo cuanto antes.",
+        faqs: [
+          { q: "¿Cómo sé si me deben cotizaciones?", a: "Puedes revisar tus cartolas de AFP, Fonasa/Isapre y AFC. Si detectas lagunas coincidentes con tu periodo trabajado, es un fuerte indicio. Podemos ayudarte a verificarlo." },
+          { q: "¿Hasta cuándo debe pagarme el empleador?", a: "Hasta que convalide el despido, esto es, hasta que pague la totalidad de las cotizaciones adeudadas y te lo comunique por escrito con los respaldos correspondientes." },
+          { q: "¿Se suma a la indemnización normal?", a: "Sí. La nulidad del despido es compatible con las indemnizaciones por despido injustificado, lo que suele aumentar significativamente el monto total." }
+        ]
+      },
+      "accidentes-trabajo": {
+        navLabel: "Accidentes del trabajo y enfermedades profesionales",
+        title: "Accidentes del trabajo y enfermedades profesionales",
+        subtitle: "Si sufriste un accidente o desarrollaste una enfermedad a causa de tus labores o por negligencia de la empresa, tienes derecho a ser indemnizado por el daño moral y el lucro cesante.",
+        iconHtml: icon('<circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/>'),
+        aboutHeading: "Cuando el trabajo daña tu salud, la empresa debe responder",
+        about: [
+          "Un accidente del trabajo es toda lesión sufrida a causa o con ocasión del trabajo (incluye el trayecto). Una enfermedad profesional es la causada de manera directa por el ejercicio de la actividad laboral. Ambos están cubiertos por el seguro de la Ley 16.744.",
+          "Más allá de las prestaciones del seguro (atención médica, subsidios, indemnizaciones o pensiones según el grado de incapacidad), cuando el accidente o la enfermedad se deben a que el empleador no cumplió su deber de seguridad, procede además una demanda de indemnización de perjuicios.",
+          "En esa acción se puede reclamar el daño moral (el sufrimiento y la pérdida de calidad de vida) y el lucro cesante (lo que dejarás de ganar por la incapacidad), montos que se determinan según la gravedad y las circunstancias del caso."
+        ],
+        laws: [
+          { ref: "Ley N° 16.744", text: "Establece el seguro social obligatorio contra accidentes del trabajo y enfermedades profesionales, y sus prestaciones." },
+          { ref: "Art. 184 C. del Trabajo", text: "Obliga al empleador a adoptar todas las medidas necesarias para proteger eficazmente la vida y salud de los trabajadores." },
+          { ref: "Art. 69 Ley 16.744", text: "Habilita a demandar al empleador por las demás indemnizaciones, incluido el daño moral, cuando hubo culpa o dolo." }
+        ],
+        recoverHeading: "¿Qué puedes reclamar?",
+        recover: [
+          "Indemnización por daño moral",
+          "Lucro cesante por la pérdida de capacidad de ganancia",
+          "Prestaciones médicas y subsidios de la Ley 16.744",
+          "Pensión por incapacidad permanente, según el grado"
+        ],
+        deadline: "5 años",
+        deadlineNote: "Plazo de prescripción referencial para las acciones derivadas de accidentes del trabajo y enfermedades profesionales. Mientras antes actúes, mejor se conserva la prueba.",
+        faqs: [
+          { q: "El accidente fue de trayecto, ¿está cubierto?", a: "Sí. Los accidentes ocurridos en el trayecto directo entre el hogar y el trabajo (y viceversa) están cubiertos por la Ley 16.744." },
+          { q: "¿Puedo demandar además del seguro?", a: "Sí. Si hubo culpa o negligencia del empleador en las condiciones de seguridad, puedes demandar el daño moral y el lucro cesante, de forma adicional a las prestaciones del seguro." },
+          { q: "¿Y las enfermedades por el trabajo?", a: "Las enfermedades profesionales (por ejemplo, por sobreesfuerzo, ruido o exposición a agentes) también dan derecho a prestaciones e indemnización cuando se acredita el origen laboral." }
+        ]
+      },
+      "finiquito": {
+        navLabel: "Finiquito mal calculado o no pagado",
+        title: "Finiquito mal calculado o no pagado",
+        subtitle: "No firmes tu finiquito si tienes dudas. Revisamos el cálculo de tus años de servicio, feriados y descuentos para asegurar que no te falte ni un peso de lo que legalmente te corresponde.",
+        iconHtml: icon('<path d="M4 3h16v18l-3-2-3 2-2-2-2 2-3-2z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/>'),
+        aboutHeading: "El finiquito debe reflejar exactamente lo que te deben",
+        about: [
+          "El finiquito es el documento que da cuenta del término de la relación laboral y del pago de lo adeudado. El problema es que muchas veces llega mal calculado: años de servicio incompletos, feriado no pagado, semana corrida omitida o descuentos que no corresponden.",
+          "Una vez firmado ante ministro de fe y sin objeciones, el finiquito tiene poder liberatorio: se presume que renunciaste a reclamar. Por eso es clave revisarlo antes de firmar, o firmarlo con \"reserva de derechos\" sobre lo que estás cobrando.",
+          "Si ya firmaste, no todo está perdido: si lo hiciste con reserva de derechos, o si el finiquito no cumple las formalidades legales, aún es posible demandar las diferencias."
+        ],
+        laws: [
+          { ref: "Art. 177 C. del Trabajo", text: "Regula el finiquito, su ratificación ante ministro de fe y su poder liberatorio. Permite la reserva de derechos." },
+          { ref: "Art. 73 C. del Trabajo", text: "Establece el derecho al feriado legal y su compensación en dinero al término del contrato." },
+          { ref: "Art. 63 C. del Trabajo", text: "Fija reajustes e intereses sobre las sumas adeudadas y no pagadas oportunamente." }
+        ],
+        recoverHeading: "¿Qué solemos detectar?",
+        recover: [
+          "Feriado legal y proporcional mal calculado o no pagado",
+          "Años de servicio subvalorados o incompletos",
+          "Descuentos indebidos (seguro de cesantía, anticipos)",
+          "Semana corrida, gratificaciones y bonos omitidos"
+        ],
+        deadline: "Antes de firmar",
+        deadlineNote: "Idealmente revisamos el finiquito antes de que lo firmes. Si ya firmaste con reserva de derechos, aún puedes demandar las diferencias; consúltanos con urgencia.",
+        faqs: [
+          { q: "Ya firmé el finiquito, ¿puedo reclamar?", a: "Si lo firmaste con la reserva de derechos adecuada, sí podemos demandar las diferencias. Aunque no la hayas hecho, revisamos si el documento cumplió las formalidades legales." },
+          { q: "¿Qué es la reserva de derechos?", a: "Es una anotación en el finiquito indicando que aceptas el pago pero te reservas el derecho a reclamar montos que consideras pendientes. Evita que el finiquito tenga efecto liberatorio total." },
+          { q: "¿Cuánto cuesta que revisen mi finiquito?", a: "La primera revisión es sin costo inicial. Solo cobramos si logramos recuperar diferencias a tu favor." }
+        ]
+      }
+    };
+
+    const order = ["despido-injustificado","tutela-laboral","autodespido","nulidad-despido","accidentes-trabajo","finiquito"];
+    const allServices = order.map(slug => ({ slug, navLabel: DATA[slug].navLabel }));
+
+    let slug = "despido-injustificado";
+    try {
+      const p = new URLSearchParams(window.location.search).get('s');
+      if (p && DATA[p]) slug = p;
+    } catch (e) {}
+    const svc = DATA[slug];
+    const otherServices = allServices.filter(s => s.slug !== slug);
+
+    const faqs = svc.faqs.map((f, i) => {
+      const open = this.state.openFaq === i;
+      return {
+        q: f.q, a: f.a,
+        maxH: open ? "300px" : "0px",
+        rotate: open ? "rotate(45deg)" : "rotate(0deg)",
+        toggle: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i })),
+      };
+    });
+
+    return {
+      waLink, svc, faqs, allServices, otherServices,
+      menuOpacity: this.state.menuOpen ? "1" : "0",
+      menuVis: this.state.menuOpen ? "visible" : "hidden",
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

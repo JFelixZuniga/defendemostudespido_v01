@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Source Sans 3', system-ui, sans-serif; color: #17272f; background: #f6f3ec; }
+  a { color: #b98b3e; text-decoration: none; }
+  a:hover { color: #9c7331; }
+  @keyframes floatpulse { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes fadeup { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes trustRise { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes revealUp { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes waPulse { 0% { box-shadow: 0 12px 30px rgba(37,163,90,0.5), 0 0 0 0 rgba(37,163,90,0.45); } 70% { box-shadow: 0 12px 30px rgba(37,163,90,0.5), 0 0 0 18px rgba(37,163,90,0); } 100% { box-shadow: 0 12px 30px rgba(37,163,90,0.5), 0 0 0 0 rgba(37,163,90,0); } }
+  @keyframes navDrop { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .hero-stagger > * { opacity: 0; animation: heroIn 0.85s cubic-bezier(0.22,1,0.36,1) both; }
+  .hero-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero-stagger > *:nth-child(2) { animation-delay: 0.15s; }
+  .hero-stagger > *:nth-child(3) { animation-delay: 0.25s; }
+  .hero-stagger > *:nth-child(4) { animation-delay: 0.35s; }
+  .hero-stagger > *:nth-child(5) { animation-delay: 0.45s; }
+  .hero-stagger > *:nth-child(6) { animation-delay: 0.55s; }
+  .reveal { animation: revealUp both linear; animation-timeline: view(); animation-range: entry 0% cover 32%; }
+  .svc-card .svc-arrow { transition: transform 0.25s ease; }
+  .svc-card:hover .svc-arrow { transform: translateX(6px); }
+</style>
+</helmet>
+<div style="min-height:100vh;background:#f6f3ec;overflow-x:clip;">
+
+  <!-- HEADER -->
+  <header style="position:fixed;top:0;left:0;right:0;width:100%;z-index:50;background:{{ headerBg }};backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid {{ headerBorder }};box-shadow:{{ headerShadow }};transition:background .4s ease, box-shadow .4s ease, padding .4s ease, border-color .4s ease;animation:navDrop .7s cubic-bezier(0.22,1,0.36,1) both;">
+    <div style="max-width:1200px;margin:0 auto;padding:{{ headerPad }};display:flex;align-items:center;justify-content:space-between;gap:24px;transition:padding .4s ease;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:38px;height:44px;display:flex;align-items:center;justify-content:center;color:#c6a15b;">
+          <svg viewBox="0 0 24 28" width="34" height="40" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v22"/><path d="M4 24h16"/><path d="M4 6h16"/><path d="M12 6l-6 2 6-2 6 2-6-2z"/><path d="M6 8l-3 7h6l-3-7z"/><path d="M18 8l-3 7h6l-3-7z"/></svg>
+        </div>
+        <div style="line-height:1;font-family:'Playfair Display',serif;color:#f4efe3;letter-spacing:2px;">
+          <div style="font-weight:700;font-size:16px;">ABOGADOS</div>
+          <div style="font-weight:700;font-size:16px;color:#c6a15b;">LABORALES</div>
+        </div>
+      </div>
+      <nav style="display:flex;align-items:center;gap:30px;">
+        <a href="#inicio" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Inicio</a>
+        <a href="Nosotros.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Nosotros</a>
+        <div style="position:relative;" onMouseEnter="{{ openMenu }}" onMouseLeave="{{ closeMenu }}">
+          <a href="#servicios" style="display:inline-flex;align-items:center;gap:6px;color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Servicios <span style="font-size:10px;color:#c6a15b;">▼</span></a>
+          <div style="position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:14px;width:340px;opacity:{{ menuOpacity }};visibility:{{ menuVis }};transition:opacity .18s;">
+           <div style="background:#0c2231;border:1px solid rgba(198,161,91,0.25);border-radius:12px;padding:10px;box-shadow:0 24px 50px rgba(8,23,34,0.5);">
+            <sc-for list="{{ servicesMenu }}" as="m" hint-placeholder-count="6">
+              <a href="Servicio.dc.html?s={{ m.slug }}" style="display:block;padding:11px 14px;border-radius:8px;color:#d7ddda;font-size:14px;line-height:1.3;font-weight:500;text-transform:none;letter-spacing:0;" style-hover="background:rgba(198,161,91,0.12);color:#f4efe3;">{{ m.navLabel }}</a>
+            </sc-for>
+           </div>
+          </div>
+        </div>
+        <a href="#faq" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Preguntas Frecuentes</a>
+        <a href="Contacto.dc.html" style="color:#e7e1d3;font-size:14px;letter-spacing:1.2px;font-weight:600;text-transform:uppercase;">Contacto</a>
+      </nav>
+      <a href="{{ waLink }}" target="_blank" style="display:inline-flex;align-items:center;gap:9px;background:#25a35a;color:#fff;padding:11px 20px;border-radius:8px;font-weight:700;font-size:14px;box-shadow:0 6px 18px rgba(37,163,90,0.35);" style-hover="background:#1f8c4c;color:#fff;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+        Evaluación Gratuita
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="inicio" style="position:relative;background:#0a1a26;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:url('uploads/hero_imagen.png');background-size:cover;background-position:center right;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,#081722 0%,rgba(9,27,39,0.94) 34%,rgba(9,27,39,0.55) 58%,rgba(9,27,39,0.15) 100%);"></div>
+    <div style="position:absolute;inset:0;opacity:0.5;pointer-events:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.5%22/></svg>');mix-blend-mode:overlay;"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:96px 32px 120px;">
+      <div class="hero-stagger" style="max-width:620px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(198,161,91,0.14);border:1px solid rgba(198,161,91,0.4);color:#dcbd7f;padding:7px 15px;border-radius:100px;font-size:13px;font-weight:600;letter-spacing:1px;margin-bottom:26px;">DERECHO LABORAL · TODO CHILE</div>
+        <h1 style="font-family:'Playfair Display',serif;color:#f6f2e8;font-size:60px;line-height:1.05;margin:0 0 8px;font-weight:700;">¿Te despidieron<br>injustamente?</h1>
+        <h1 style="font-family:'Playfair Display',serif;color:#6bbd87;font-size:60px;line-height:1.05;margin:0 0 22px;font-weight:700;font-style:italic;">Háblanos.</h1>
+        <p style="color:#d7ddda;font-size:21px;line-height:1.5;margin:0 0 12px;max-width:520px;">No enfrentes a tu empleador solo. Podrías tener derecho a una <span style="color:#dcbd7f;font-weight:600;">importante indemnización.</span></p>
+        <p style="color:#a9b6b8;font-size:16px;line-height:1.5;margin:0 0 36px;max-width:500px;">Asesoramos y representamos a trabajadores en todo tipo de conflictos laborales. Especialistas a tu lado.</p>
+        <a href="{{ waLink }}" target="_blank" style="display:inline-flex;align-items:center;gap:13px;background:#25a35a;color:#fff;padding:19px 34px;border-radius:11px;font-weight:700;font-size:18px;box-shadow:0 14px 34px rgba(37,163,90,0.42);" style-hover="background:#1f8c4c;color:#fff;transform:translateY(-2px);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+          Consulta gratis por WhatsApp
+        </a>
+        <div style="display:flex;align-items:center;gap:9px;margin-top:20px;color:#c6d0cf;font-size:15px;font-weight:600;">
+          Atención rápida y directa · Sin costo inicial
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div style="max-width:1200px;margin:-56px auto 0;padding:0 32px;position:relative;z-index:10;">
+    <div style="background:#0c2231;border:1px solid rgba(198,161,91,0.22);border-radius:16px;padding:34px 20px;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 24px 60px rgba(8,23,34,0.4);animation:trustRise 0.9s cubic-bezier(0.22,1,0.36,1) both;">
+      <sc-for list="{{ trust }}" as="t" hint-placeholder-count="4">
+        <div style="padding:0 26px;text-align:center;border-right:1px solid rgba(255,255,255,0.09);">
+          <div style="color:#c6a15b;display:flex;justify-content:center;margin-bottom:14px;">
+            <span style="font-size:34px;line-height:1;" dangerouslySetInnerHTML="{{ t.iconHtml }}"></span>
+          </div>
+          <div style="font-family:'Playfair Display',serif;color:#f4efe3;font-size:26px;font-weight:700;margin-bottom:6px;">{{ t.stat }}</div>
+          <div style="color:#adbbc0;font-size:14px;line-height:1.4;">{{ t.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- SITUACIONES / SERVICIOS -->
+  <section id="servicios" style="max-width:1120px;margin:0 auto;padding:96px 32px 40px;">
+    <div class="reveal" style="text-align:center;margin-bottom:52px;">
+      <div style="color:#b98b3e;font-size:14px;letter-spacing:2px;font-weight:700;margin-bottom:14px;">NUESTROS SERVICIOS</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:42px;color:#0c2231;margin:0 0 16px;font-weight:700;">¿En qué situaciones te podemos ayudar?</h2>
+      <div style="width:70px;height:3px;background:#c6a15b;margin:0 auto 18px;border-radius:2px;"></div>
+      <p style="color:#5a6a70;font-size:18px;max-width:640px;margin:0 auto;line-height:1.5;">Identifica tu problema. Cada caso tiene una solución legal, y estamos aquí para hacerla valer por ti.</p>
+    </div>
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+        <a class="svc-card" href="Servicio.dc.html?s={{ s.slug }}" style="display:flex;gap:20px;align-items:flex-start;background:#fff;border:1px solid #e8e2d5;border-radius:14px;padding:26px;transition:all .18s;color:inherit;" style-hover="border-color:#c6a15b;transform:translateY(-3px);box-shadow:0 16px 34px rgba(12,34,49,0.1);">
+          <div style="flex-shrink:0;width:60px;height:60px;border-radius:50%;background:#eaf3ec;display:flex;align-items:center;justify-content:center;color:#3f8a58;">
+            <span style="font-size:26px;line-height:1;" dangerouslySetInnerHTML="{{ s.iconHtml }}"></span>
+          </div>
+          <div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:#0c2231;margin:2px 0 8px;font-weight:700;">{{ s.title }}</h3>
+            <p style="color:#5a6a70;font-size:15px;line-height:1.5;margin:0;">{{ s.desc }}</p>
+          </div>
+          <div class="svc-arrow" style="margin-left:auto;color:#c6a15b;font-size:22px;align-self:center;">›</div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section id="nosotros" style="background:#0c2231;margin-top:72px;">
+    <div style="max-width:1120px;margin:0 auto;padding:88px 32px;">
+      <div class="reveal" style="text-align:center;margin-bottom:54px;">
+        <div style="color:#c6a15b;font-size:14px;letter-spacing:2px;font-weight:700;margin-bottom:14px;">POR QUÉ ELEGIRNOS</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:40px;color:#f6f2e8;margin:0;font-weight:700;">Resultados reales, personas reales.</h2>
+      </div>
+      <div class="reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="3">
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(198,161,91,0.2);border-radius:14px;padding:34px 28px;">
+            <div style="width:54px;height:54px;border-radius:12px;background:rgba(198,161,91,0.14);display:flex;align-items:center;justify-content:center;color:#dcbd7f;margin-bottom:20px;">
+              <span style="font-size:26px;line-height:1;" dangerouslySetInnerHTML="{{ r.iconHtml }}"></span>
+            </div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:21px;color:#f4efe3;margin:0 0 10px;font-weight:600;">{{ r.title }}</h3>
+            <p style="color:#adbbc0;font-size:15px;line-height:1.55;margin:0;">{{ r.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section style="max-width:1120px;margin:0 auto;padding:90px 32px 40px;">
+    <div class="reveal" style="text-align:center;margin-bottom:56px;">
+      <div style="color:#b98b3e;font-size:14px;letter-spacing:2px;font-weight:700;margin-bottom:14px;">CÓMO TRABAJAMOS</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:40px;color:#0c2231;margin:0;font-weight:700;">Tu caso, en 3 simples pasos.</h2>
+    </div>
+    <div class="reveal" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+      <div style="position:absolute;top:33px;left:16%;right:16%;height:2px;background:repeating-linear-gradient(90deg,#d8c9a6 0 8px,transparent 8px 16px);pointer-events:none;"></div>
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+        <div style="position:relative;padding:8px 6px;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#fbf8f0;border:2px solid #e4d7bb;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:28px;color:#b98b3e;font-weight:800;line-height:1;margin-bottom:18px;">{{ st.num }}</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#0c2231;margin:0 0 10px;font-weight:700;">{{ st.title }}</h3>
+          <p style="color:#5a6a70;font-size:16px;line-height:1.55;margin:0;">{{ st.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="max-width:860px;margin:0 auto;padding:80px 32px 50px;">
+    <div class="reveal" style="text-align:center;margin-bottom:44px;">
+      <h2 style="font-family:'Playfair Display',serif;font-size:40px;color:#0c2231;margin:0 0 14px;font-weight:700;">Preguntas frecuentes</h2>
+      <div style="width:70px;height:3px;background:#c6a15b;margin:0 auto;border-radius:2px;"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="3">
+        <div style="background:#fff;border:1px solid #e8e2d5;border-radius:12px;overflow:hidden;">
+          <button onClick="{{ f.toggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;background:none;border:none;padding:22px 26px;cursor:pointer;text-align:left;font-family:'Playfair Display',serif;font-size:19px;color:#0c2231;font-weight:600;">
+            <span>{{ f.q }}</span>
+            <span style="color:#c6a15b;font-size:26px;flex-shrink:0;transition:transform .2s;transform:{{ f.rotate }};">+</span>
+          </button>
+          <div style="max-height:{{ f.maxH }};overflow:hidden;transition:max-height .28s ease;">
+            <p style="padding:0 26px 24px;margin:0;color:#5a6a70;font-size:16px;line-height:1.6;">{{ f.a }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section id="contacto" style="max-width:1120px;margin:40px auto 90px;padding:0 32px;">
+    <div style="position:relative;overflow:hidden;background:linear-gradient(120deg,#0d2e1e 0%,#124026 55%,#0c2231 100%);border-radius:20px;padding:60px 56px;display:flex;align-items:center;gap:40px;justify-content:space-between;flex-wrap:wrap;">
+      <div style="position:absolute;right:-40px;bottom:-40px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(198,161,91,0.16),transparent 70%);"></div>
+      <div style="position:relative;max-width:600px;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:38px;color:#f6f2e8;margin:0 0 14px;font-weight:700;line-height:1.15;">Escríbenos hoy mismo y analizamos tu caso <span style="color:#dcbd7f;">sin costo inicial.</span></h2>
+        <p style="color:#c3d1c8;font-size:17px;margin:0;line-height:1.5;">No dejes pasar el tiempo legal para demandar — en muchos casos tienes solo <strong style="color:#f6f2e8;">60 días hábiles</strong>. Solo cobramos si ganamos.</p>
+      </div>
+      <a href="{{ waLink }}" target="_blank" style="position:relative;display:inline-flex;align-items:center;gap:13px;background:#25a35a;color:#fff;padding:20px 36px;border-radius:12px;font-weight:700;font-size:18px;box-shadow:0 14px 34px rgba(37,163,90,0.4);white-space:nowrap;" style-hover="background:#1f8c4c;color:#fff;transform:translateY(-2px);">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+        Consultar ahora
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#081722;border-top:1px solid rgba(198,161,91,0.16);">
+    <div style="max-width:1200px;margin:0 auto;padding:60px 32px 30px;">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+            <div style="color:#c6a15b;"><svg viewBox="0 0 24 28" width="28" height="34" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v22"/><path d="M4 24h16"/><path d="M4 6h16"/><path d="M6 8l-3 7h6l-3-7z"/><path d="M18 8l-3 7h6l-3-7z"/></svg></div>
+            <div style="font-family:'Playfair Display',serif;color:#f4efe3;letter-spacing:2px;line-height:1.1;"><div style="font-weight:700;font-size:15px;">ABOGADOS</div><div style="font-weight:700;font-size:15px;color:#c6a15b;">LABORALES</div></div>
+          </div>
+          <p style="color:#8fa0a7;font-size:15px;line-height:1.6;margin:0;max-width:320px;">Defendemos a trabajadores en todo Chile. Tu tranquilidad y cada peso que la ley te otorga, es nuestra misión.</p>
+        </div>
+        <div>
+          <div style="color:#dcbd7f;font-size:13px;letter-spacing:1.5px;font-weight:700;margin-bottom:16px;">NAVEGACIÓN</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="5">
+              <a href="{{ link.href }}" style="color:#a9b6b8;font-size:15px;" style-hover="color:#f4efe3;">{{ link.label }}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="color:#dcbd7f;font-size:13px;letter-spacing:1.5px;font-weight:700;margin-bottom:16px;">CONTACTO</div>
+          <div style="display:flex;flex-direction:column;gap:11px;color:#a9b6b8;font-size:15px;line-height:1.4;">
+            <div>WhatsApp: <a href="{{ waLink }}" target="_blank">+56 9 1234 5678</a></div>
+            <div>Lun – Vie, 07:00 a 19:00 hrs</div>
+            <div>Instagram: <a href="https://instagram.com/defendemostudespido" target="_blank">@defendemostudespido</a></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:#6f8188;font-size:13px;">
+        <div>© 2026 Abogados Laborales. Todos los derechos reservados.</div>
+        <div>Confidencialidad absoluta garantizada en cada consulta.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="{{ waLink }}" target="_blank" style="position:fixed;right:26px;bottom:26px;z-index:60;width:64px;height:64px;border-radius:50%;background:#25a35a;display:flex;align-items:center;justify-content:center;animation:waPulse 2.4s ease-out infinite;" style-hover="background:#1f8c4c;">
+    <svg viewBox="0 0 24 24" width="34" height="34" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.03c-.24.68-1.42 1.31-1.95 1.35-.5.05-1.13.24-3.66-.77-3.08-1.24-5.06-4.4-5.21-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.81-.38.2 0 .41 0 .58.01.19.01.44-.07.68.52.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.61 2 1.11.99 2.05 1.29 2.34 1.44.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.71.81 2 .96.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { openFaq: 0, menuOpen: false, scrolled: false };
+
+  componentDidMount() {
+    const hero = document.getElementById('inicio');
+    if (hero && 'IntersectionObserver' in window) {
+      this._io = new IntersectionObserver(([e]) => {
+        this.setState({ scrolled: !e.isIntersecting });
+      }, { rootMargin: "-80px 0px 0px 0px", threshold: 0 });
+      this._io.observe(hero);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+  }
+
+  renderVals() {
+    const waLink = "https://wa.me/56912345678?text=Hola,%20quisiera%20una%20evaluaci%C3%B3n%20gratuita%20de%20mi%20caso%20laboral.";
+    const icon = (p) => ({ __html: `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>` });
+
+    const navLinks = [
+      { label: "Inicio", href: "#inicio" },
+      { label: "Nosotros", href: "#nosotros" },
+      { label: "Servicios", href: "#servicios" },
+      { label: "Preguntas Frecuentes", href: "#faq" },
+      { label: "Contacto", href: "#contacto" },
+    ];
+
+    const trust = [
+      { stat: "+600", label: "Casos tramitados exitosamente", iconHtml: icon('<path d="M6 9a6 6 0 0 0 12 0"/><path d="M8 21h8"/><path d="M12 15v6"/><path d="M6 3h12v3a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3z"/>') },
+      { stat: "4 años", label: "De experiencia exclusiva en derecho laboral", iconHtml: icon('<path d="M12 2 3 6v6c0 5 3.8 8.5 9 10 5.2-1.5 9-5 9-10V6z"/>') },
+      { stat: "100%", label: "Representación en todo Chile", iconHtml: icon('<circle cx="12" cy="10" r="3"/><path d="M12 21s7-5.5 7-11a7 7 0 0 0-14 0c0 5.5 7 11 7 11z"/>') },
+      { stat: "$0", label: "Costo por evaluar tu caso", iconHtml: icon('<circle cx="12" cy="12" r="9"/><path d="M15 9.5a2.5 2.5 0 0 0-2.5-1.5h-1a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-1A2.5 2.5 0 0 1 9 14.5"/><path d="M12 6v2"/><path d="M12 16v2"/>') },
+    ];
+
+    const services = [
+      { slug: "despido-injustificado", title: "Despido injustificado, indebido o verbal", desc: "Si te despidieron sin causal legal válida o de forma verbal, exigimos los recargos legales sobre tu indemnización.", iconHtml: icon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9.5 13 3 3"/><path d="m12.5 13-3 3"/>') },
+      { slug: "tutela-laboral", title: "Tutela laboral por vulneración de derechos", desc: "¿Sufriste acoso, discriminación o afectaron tu integridad? La tutela sanciona al empleador y suma indemnizaciones.", iconHtml: icon('<path d="M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5z"/><circle cx="12" cy="10" r="2.2"/><path d="M8.5 15.5a3.6 3.6 0 0 1 7 0"/>') },
+      { slug: "autodespido", title: "Autodespido (despido indirecto)", desc: "Si tu empleador incumple gravemente tu contrato, te ayudamos a autodespedirte legalmente y cobrar todo lo que te corresponde.", iconHtml: icon('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>') },
+      { slug: "nulidad-despido", title: "Nulidad del despido (Ley Bustos)", desc: "Si el empleador no tenía tus cotizaciones al día, el despido es nulo y debe seguir pagando tu sueldo hasta regularizar.", iconHtml: icon('<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 3h6v3H9z"/><path d="m9 13 2 2 4-4"/>') },
+      { slug: "accidentes-trabajo", title: "Accidentes del trabajo y enfermedades", desc: "Tienes derecho a indemnización por daño moral y lucro cesante frente a accidentes o negligencia de la empresa.", iconHtml: icon('<circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/>') },
+      { slug: "finiquito", title: "Finiquito mal calculado o no pagado", desc: "No firmes con dudas. Revisamos vacaciones, años de servicio y descuentos para que no te falte ni un peso.", iconHtml: icon('<path d="M4 3h16v18l-3-2-3 2-2-2-2 2-3-2z"/><path d="M8 8h8"/><path d="M8 16h5"/>') },
+    ];
+
+    const reasons = [
+      { title: "Atención personalizada y cercana", desc: "Hablarás directamente con abogados especialistas, no con bots ni intermediarios.", iconHtml: icon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>') },
+      { title: "Confidencialidad garantizada", desc: "Tu información está 100% segura con nosotros en cada etapa del proceso.", iconHtml: icon('<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>') },
+      { title: "Sin costo inicial", desc: "Evaluamos la viabilidad de tu caso antes de que gastes un peso. Solo cobramos si ganamos.", iconHtml: icon('<circle cx="12" cy="12" r="9"/><path d="M15 9.5a2.5 2.5 0 0 0-2.5-1.5h-1a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-1A2.5 2.5 0 0 1 9 14.5"/><path d="M12 6v2"/><path d="M12 16v2"/>') },
+    ];
+
+    const steps = [
+      { num: "01", title: "Escríbenos por WhatsApp", desc: "Cuéntanos qué pasó en un mensaje. La conversación es directa, gratuita y confidencial." },
+      { num: "02", title: "Evaluamos tu caso", desc: "Analizamos la viabilidad y te explicamos con claridad tus derechos y qué podrías recuperar." },
+      { num: "03", title: "Te representamos", desc: "Nos hacemos cargo de demandar lo que te corresponde, en toda regla y en todo Chile." },
+    ];
+
+    const faqData = [
+      { q: "¿Tengo que pagar para que revisen mi caso?", a: "No. Escríbenos hoy mismo y analizamos tu caso sin costo inicial. Solo cobramos si ganamos." },
+      { q: "Vivo fuera de Santiago, ¿pueden tomar mi caso?", a: "Absolutamente. Brindamos representación legal a trabajadores en todo Chile de manera telemática y presencial, según lo requiera el tribunal." },
+      { q: "¿Qué pasa si ya firmé el finiquito?", a: "Si lo firmaste con la reserva de derechos adecuada, aún podemos demandar. Si no estás seguro, contáctanos urgentemente para revisar el documento." },
+    ];
+    const faqs = faqData.map((f, i) => {
+      const open = this.state.openFaq === i;
+      return {
+        q: f.q, a: f.a,
+        maxH: open ? "220px" : "0px",
+        rotate: open ? "rotate(45deg)" : "rotate(0deg)",
+        toggle: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i })),
+      };
+    });
+
+    const servicesMenu = services.map(s => ({ slug: s.slug, navLabel: s.title }));
+
+    const scrolled = this.state.scrolled;
+    return {
+      waLink, navLinks, trust, services, reasons, steps, faqs, servicesMenu,
+      headerBg: scrolled ? "rgba(9,26,38,0.55)" : "rgba(9,26,38,0.95)",
+      headerBorder: scrolled ? "rgba(198,161,91,0.4)" : "rgba(198,161,91,0.18)",
+      headerShadow: scrolled ? "0 12px 34px rgba(8,23,34,0.45)" : "none",
+      headerPad: scrolled ? "8px 32px" : "16px 32px",
+      menuOpacity: this.state.menuOpen ? "1" : "0",
+      menuVis: this.state.menuOpen ? "visible" : "hidden",
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>
